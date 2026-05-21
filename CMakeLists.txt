@@ -5,4 +5,6 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_executable(Assesment_1 main.cpp
         Movie.cpp
-        Movie.h)
+        Movie.h
+        Screen.cpp
+        Screen.h)
