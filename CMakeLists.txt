@@ -3,4 +3,6 @@ project(Assesment_1)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(Assesment_1 main.cpp)
+add_executable(Assesment_1 main.cpp
+        Movie.cpp
+        Movie.h)

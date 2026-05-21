@@ -21,7 +21,7 @@
 
 ------------------------------------------------------------------------------------------------------------------------------
 
-This stage of the assesment is about designing and planning what and how the program should work. This stage splits into three parts where, first is to outlining the program specification. Then second part is to show the IO table of the program. FInally, a flowchart to show the algorithm of the whole program. The program is about cinema ticket booking system. By the end of this assesment, I will be prepared for the coding part. Because the structure of the program and description will be outlined in this assesment.
+This stage of the assessment is about designing and planning what and how the program should work. This stage splits into three parts where, first is to outlining the program specification. Then second part is to show the IO table of the program. Finally, a flowchart to show the algorithm of the whole program. The program is about cinema ticket booking system. By the end of this assessment, I will be prepared for the coding part. Because the structure of the program and description will be outlined in this assessment.
 
 ------------------------------------------------------------------------------------------------------------------------------
 
