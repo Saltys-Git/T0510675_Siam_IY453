@@ -24,6 +24,11 @@ void Screen::showScreenInformation() {
 }
 
 
+void Screen::addShows() {
+    Screen()
+}
+
+
 void Screen::bookSeat(int ticketNumber) {
     seatBooked += ticketNumber;
     cout << ticketNumber << " seats booked." << endl;

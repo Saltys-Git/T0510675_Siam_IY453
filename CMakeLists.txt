@@ -7,4 +7,6 @@ add_executable(Assesment_1 main.cpp
         Movie.cpp
         Movie.h
         Screen.cpp
-        Screen.h)
+        Screen.h
+        Booking.cpp
+        Booking.h)

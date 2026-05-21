@@ -26,6 +26,7 @@ class Screen {
     Screen();
     Screen(int tempId,int tempSeatCapacity, int tempSeatBooked, Movie tempMovieShowing, screenFacilityEnum tempScreenFacility, string tempStartDate, string tempEndDate);
     void showScreenInformation();
+    void addShows();
     void bookSeat(int ticketNumber);
 };
 
