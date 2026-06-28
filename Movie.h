@@ -4,6 +4,7 @@
 
 #ifndef ASSESMENT_1_MOVIE_H
 #define ASSESMENT_1_MOVIE_H
+#include <iostream>
 #include <string>
 using namespace std;
 

@@ -2,17 +2,19 @@
 #include "Movie.h"
 #include "Screen.h"
 #include "Booking.h"
+#include "MovieManager.h"
 
 int main() {
-    Movie testMovie(1, "Test Film", "A test description", "Action", "Actor Name",
-                     "Studio", 120, "2026-01-01");
-    testMovie.DisplayMovieInformation();
+    MovieManager movieManager;
 
-    Screen testScreen(1, 150, 0, testMovie, IMAX, "10:00", "12:00");
-    testScreen.ShowScreenInformation();
-    testScreen.BookSeat(50);
+    cout << "All available films:" << endl;
+    movieManager.DisplayAllMovies();
 
-    Booking testBooking;
+    Movie* searchResult = movieManager.FindMovieByTitle("Ocean Drift");
+    if (searchResult != nullptr) {
+        cout << "Found film:" << endl;
+        searchResult->DisplayMovieInformation();
+    }
 
     return 0;
 }
