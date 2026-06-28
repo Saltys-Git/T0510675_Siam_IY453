@@ -5,31 +5,33 @@
 #ifndef ASSESMENT_1_BOOKING_H
 #define ASSESMENT_1_BOOKING_H
 #include <string>
-
 using namespace std;
 
-enum ticketTypeEnum {
+enum TicketType {
     ADULT,
     CHILD,
     STUDENT,
     SENIOR_CITIZEN
 };
 
-enum paymentMethodEnum {
+enum PaymentMethod {
     CASH,
     CARD
 };
 
 class Booking {
 private:
-    int id, ticketsNumber, paid, changes;
-    ticketTypeEnum ticketType;
-    paymentMethodEnum paymentMethod;
-    string time, date, cardNumber, cardCVC, cardExpirationDate;
+    int id;
+    int ticketsNumber;
+    double amountPaid;
+    double changeDue;
+    TicketType ticketType;
+    PaymentMethod paymentMethod;
+    string showTime;
+    string showDate;
+
 public:
     Booking();
-    
 };
-
 
 #endif //ASSESMENT_1_BOOKING_H

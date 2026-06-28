@@ -4,32 +4,58 @@
 
 #include "Screen.h"
 
-
-Screen::Screen(int tempId, int tempSeatCapacity, int tempSeatBooked, Movie tempMovieShowing, screenFacilityEnum tempScreenFacility, string tempStartDate, string tempEndDate) {
-    id = tempId;
-    seatCapacity = tempSeatCapacity;
-    seatBooked = tempSeatBooked;
-    movieShowing = tempMovieShowing;
-    startDate = tempStartDate;
-    endDate = tempEndDate;
+Screen::Screen() {
+    id = 0;
+    seatCapacity = 0;
+    seatBooked = 0;
+    screenFacility = STANDARD;
 }
 
+Screen::Screen(int screenId, int screenSeatCapacity, int screenSeatBooked, Movie screenMovieShowing,
+               ScreenFacility screenScreenFacility, string screenStartDate, string screenEndDate) {
+    id = screenId;
+    seatCapacity = screenSeatCapacity;
+    seatBooked = screenSeatBooked;
+    movieShowing = screenMovieShowing;
+    screenFacility = screenScreenFacility;
+    startDate = screenStartDate;
+    endDate = screenEndDate;
+}
 
-void Screen::showScreenInformation() {
+int Screen::GetId() {
+    return id;
+}
+
+int Screen::GetSeatCapacity() {
+    return seatCapacity;
+}
+
+int Screen::GetSeatBooked() {
+    return seatBooked;
+}
+
+Movie Screen::GetMovieShowing() {
+    return movieShowing;
+}
+
+void Screen::ShowScreenInformation() {
     cout << endl << "Screen Information:" << endl;
-    cout << endl;
-    cout << "Movie:" << movieShowing.getTitle() << endl;
-    cout << "Seats available" << seatCapacity-seatBooked << endl;
-    cout << "Show time" << startDate << " - " << endDate << endl;
+    cout << "Movie: " << movieShowing.GetTitle() << endl;
+    cout << "Seats available: " << (seatCapacity - seatBooked) << endl;
+    cout << "Show time: " << startDate << " - " << endDate << endl;
 }
 
+// Single return variable used so there is only one exit point from the function.
+bool Screen::BookSeat(int ticketNumber) {
+    bool bookingSuccessful = false;
 
-void Screen::addShows() {
-    Screen()
-}
+    if (ticketNumber + seatBooked <= seatCapacity) {
+        seatBooked += ticketNumber;
+        cout << ticketNumber << " seats booked." << endl;
+        bookingSuccessful = true;
+    } else {
+        cout << "Booking failed: not enough seats available." << endl;
+    }
 
-
-void Screen::bookSeat(int ticketNumber) {
-    seatBooked += ticketNumber;
-    cout << ticketNumber << " seats booked." << endl;
+    return bookingSuccessful;
 }

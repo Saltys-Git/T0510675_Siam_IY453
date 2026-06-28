@@ -6,10 +6,7 @@
 #define ASSESMENT_1_SCREEN_H
 #include "Movie.h"
 
-
-//https://www.geeksforgeeks.org/cpp/enumeration-in-cpp/ (2026)
-enum screenFacilityEnum
-{
+enum ScreenFacility {
     STANDARD,
     IMAX,
     COUPLE_SEAT,
@@ -17,19 +14,27 @@ enum screenFacilityEnum
 };
 
 class Screen {
-    private:
-    int id, seatCapacity, seatBooked;
+private:
+    int id;
+    int seatCapacity;
+    int seatBooked;
     Movie movieShowing;
-    screenFacilityEnum screenFacility;
-    string startDate, endDate;
-    public:
+    ScreenFacility screenFacility;
+    string startDate;
+    string endDate;
+
+public:
     Screen();
-    Screen(int tempId,int tempSeatCapacity, int tempSeatBooked, Movie tempMovieShowing, screenFacilityEnum tempScreenFacility, string tempStartDate, string tempEndDate);
-    void showScreenInformation();
-    void addShows();
-    void bookSeat(int ticketNumber);
+    Screen(int screenId, int screenSeatCapacity, int screenSeatBooked, Movie screenMovieShowing,
+           ScreenFacility screenScreenFacility, string screenStartDate, string screenEndDate);
+
+    int GetId();
+    int GetSeatCapacity();
+    int GetSeatBooked();
+    Movie GetMovieShowing();
+
+    void ShowScreenInformation();
+    bool BookSeat(int ticketNumber);
 };
-
-
 
 #endif //ASSESMENT_1_SCREEN_H
