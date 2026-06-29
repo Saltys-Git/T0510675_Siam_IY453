@@ -13,4 +13,14 @@ add_executable(Assesment_1 main.cpp
         User.cpp
         User.h
         MovieManager.cpp
-        MovieManager.h)
+        MovieManager.h
+        Ticket.cpp
+        Ticket.h
+        AdultTicket.cpp
+        AdultTicket.h
+        ChildTicket.cpp
+        ChildTicket.h
+        StudentTicket.cpp
+        StudentTicket.h
+        SeniorCitizenTicket.cpp
+        SeniorCitizenTicket.h)
