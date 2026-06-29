@@ -8,30 +8,27 @@
 #include "ChildTicket.h"
 #include "StudentTicket.h"
 #include "SeniorCitizenTicket.h"
+#include "Payment.h"
+#include "CashPayment.h"
+#include "CardPayment.h"
 
 int main() {
     MovieManager movieManager;
     cout << "All available films:" << endl;
     movieManager.DisplayAllMovies();
 
-    Ticket* ticketList[4];
-    ticketList[0] = new AdultTicket(2);
-    ticketList[1] = new ChildTicket(1);
-    ticketList[2] = new StudentTicket(3);
-    ticketList[3] = new SeniorCitizenTicket(1);
+    AdultTicket adultTicket(2);
+    double totalDue = adultTicket.CalculateTotalPrice();
+    cout << "Total due: " << totalDue << endl;
 
-    int index = 0;
-    while (index < 4) {
-        cout << ticketList[index]->GetTicketTypeName() << " x"
-             << ticketList[index]->GetQuantity() << " = £"
-             << ticketList[index]->CalculateTotalPrice() << endl;
-        index = index + 1;
+    CashPayment cashPayment(totalDue, 25.00);
+    if (cashPayment.ProcessPayment() == true) {
+        cout << "Cash payment successful. Change: " << cashPayment.GetChangeGiven() << endl;
     }
 
-    index = 0;
-    while (index < 4) {
-        delete ticketList[index];
-        index = index + 1;
+    CardPayment cardPayment(totalDue);
+    if (cardPayment.ProcessPayment("1234567812345678", "123", "12/28") == true) {
+        cout << "Card payment successful." << endl;
     }
 
     return 0;

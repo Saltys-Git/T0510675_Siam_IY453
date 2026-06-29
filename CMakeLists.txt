@@ -23,4 +23,10 @@ add_executable(Assesment_1 main.cpp
         StudentTicket.cpp
         StudentTicket.h
         SeniorCitizenTicket.cpp
-        SeniorCitizenTicket.h)
+        SeniorCitizenTicket.h
+        Payment.cpp
+        Payment.h
+        CashPayment.cpp
+        CashPayment.h
+        CardPayment.cpp
+        CardPayment.h)
