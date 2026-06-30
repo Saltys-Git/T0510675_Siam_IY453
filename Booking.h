@@ -5,33 +5,34 @@
 #ifndef ASSESMENT_1_BOOKING_H
 #define ASSESMENT_1_BOOKING_H
 #include <string>
+#include "Ticket.h"
+#include "Payment.h"
 using namespace std;
-
-enum TicketType {
-    ADULT,
-    CHILD,
-    STUDENT,
-    SENIOR_CITIZEN
-};
-
-enum PaymentMethod {
-    CASH,
-    CARD
-};
 
 class Booking {
 private:
     int id;
-    int ticketsNumber;
-    double amountPaid;
-    double changeDue;
-    TicketType ticketType;
-    PaymentMethod paymentMethod;
-    string showTime;
+    string customerName;
+    string movieTitle;
+    int screenId;
     string showDate;
+    string showTime;
+    Ticket* ticket;
+    Payment* payment;
 
 public:
-    Booking();
+    Booking(int bookingId, string bookingCustomerName, string bookingMovieTitle,
+            int bookingScreenId, string bookingShowDate, string bookingShowTime,
+            Ticket* bookingTicket, Payment* bookingPayment);
+    ~Booking();
+
+    double CalculateTotalCost();
+    void DisplayBookingInformation();
+
+    int GetId();
+    string GetCustomerName();
+    string GetMovieTitle();
+    string GetShowDate();
 };
 
 #endif //ASSESMENT_1_BOOKING_H

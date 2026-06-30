@@ -17,19 +17,14 @@ int main() {
     cout << "All available films:" << endl;
     movieManager.DisplayAllMovies();
 
-    AdultTicket adultTicket(2);
-    double totalDue = adultTicket.CalculateTotalPrice();
-    cout << "Total due: " << totalDue << endl;
+    Ticket* customerTicket = new AdultTicket(2);
+    double amountDue = customerTicket->CalculateTotalPrice();
+    Payment* customerPayment = new CashPayment(amountDue, 25.00);
+    customerPayment->ProcessPayment();
 
-    CashPayment cashPayment(totalDue, 25.00);
-    if (cashPayment.ProcessPayment() == true) {
-        cout << "Cash payment successful. Change: " << cashPayment.GetChangeGiven() << endl;
-    }
-
-    CardPayment cardPayment(totalDue);
-    if (cardPayment.ProcessPayment("1234567812345678", "123", "12/28") == true) {
-        cout << "Card payment successful." << endl;
-    }
+    Booking firstBooking(1, "Alex Rahman", "Ocean Drift", 2, "2026-07-09", "18:30",
+                          customerTicket, customerPayment);
+    firstBooking.DisplayBookingInformation();
 
     return 0;
 }
