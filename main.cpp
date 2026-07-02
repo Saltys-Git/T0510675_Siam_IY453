@@ -8,27 +8,38 @@
 #include "Payment.h"
 #include "CashPayment.h"
 #include "BookingValidator.h"
+#include "BookingManager.h"
 
 int main() {
     MovieManager movieManager;
-    cout << "All available films:" << endl;
-    movieManager.DisplayAllMovies();
+    BookingManager bookingManager;
 
-    Movie oceanDrift = *movieManager.FindMovieByTitle("Ocean Drift");
-    Screen screenTwo(2, 150, 148, oceanDrift, IMAX, "18:30", "20:38");
+    Ticket* ticketOne = new AdultTicket(2);
+    Payment* paymentOne = new CashPayment(ticketOne->CalculateTotalPrice(), 25.00);
+    paymentOne->ProcessPayment();
+    Booking bookingOne(1, "Alex Rahman", "Ocean Drift", 2, "2026-07-09", "18:30",
+                        ticketOne, paymentOne);
+    bookingOne.DisplayBookingInformation();
+    bookingManager.SaveBookingToFile(bookingOne);
 
-    BookingValidator validator;
+    Ticket* ticketTwo = new AdultTicket(1);
+    Payment* paymentTwo = new CashPayment(ticketTwo->CalculateTotalPrice(), 10.00);
+    paymentTwo->ProcessPayment();
+    Booking bookingTwo(2, "Priya Singh", "Starlight Diner", 3, "2026-07-10", "20:00",
+                        ticketTwo, paymentTwo);
+    bookingManager.SaveBookingToFile(bookingTwo);
 
-    cout << endl << "Testing seat capacity check:" << endl;
-    bool capacityOk = validator.IsWithinSeatCapacity(screenTwo, 5);
-    cout << "5 tickets allowed? " << capacityOk << endl;
+    cout << endl << "All bookings in file:" << endl;
+    bookingManager.DisplayAllBookingsFromFile();
 
-    cout << endl << "Testing current week check:" << endl;
-    bool dateOk = validator.IsDateWithinCurrentWeek("2026-07-09", "2026-07-09", "2026-07-15");
-    cout << "Date within week? " << dateOk << endl;
+    cout << endl << "Search by customer name 'Priya Singh':" << endl;
+    bookingManager.SearchBookingsByCustomerName("Priya Singh");
 
-    bool dateTooLate = validator.IsDateWithinCurrentWeek("2026-07-20", "2026-07-09", "2026-07-15");
-    cout << "Later date within week? " << dateTooLate << endl;
+    cout << endl << "Search by film title 'Ocean Drift':" << endl;
+    bookingManager.SearchBookingsByMovieTitle("Ocean Drift");
+
+    cout << endl << "Search by date '2026-07-10':" << endl;
+    bookingManager.SearchBookingsByDate("2026-07-10");
 
     return 0;
 }
