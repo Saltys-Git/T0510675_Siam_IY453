@@ -5,6 +5,8 @@
 #ifndef ASSESMENT_1_SCREEN_H
 #define ASSESMENT_1_SCREEN_H
 #include "Movie.h"
+#include "ShowTime.h"
+#include <vector>
 
 enum ScreenFacility {
     STANDARD,
@@ -35,6 +37,7 @@ public:
 
     void ShowScreenInformation();
     bool BookSeat(int ticketNumber);
+    vector<ShowTime> GenerateDailyShowtimes();
 };
 
 #endif //ASSESMENT_1_SCREEN_H

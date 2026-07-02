@@ -33,4 +33,8 @@ add_executable(Assesment_1 main.cpp
         BookingValidator.cpp
         BookingValidator.h
         BookingManager.cpp
-        BookingManager.h)
+        BookingManager.h
+        ShowTime.cpp
+        ShowTime.h
+        ShowtimeGenerator.cpp
+        ShowtimeGenerator.h)

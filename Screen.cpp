@@ -3,6 +3,7 @@
 //
 
 #include "Screen.h"
+#include "ShowtimeGenerator.h"
 
 Screen::Screen() {
     id = 0;
@@ -45,7 +46,6 @@ void Screen::ShowScreenInformation() {
     cout << "Show time: " << startDate << " - " << endDate << endl;
 }
 
-// Single return variable used so there is only one exit point from the function.
 bool Screen::BookSeat(int ticketNumber) {
     bool bookingSuccessful = false;
 
@@ -58,4 +58,12 @@ bool Screen::BookSeat(int ticketNumber) {
     }
 
     return bookingSuccessful;
+}
+
+// Delegates the actual time math to ShowtimeGenerator, keeping this
+// function short and Screen focused on representing a screen, not doing time arithmetic.
+vector<ShowTime> Screen::GenerateDailyShowtimes() {
+    ShowtimeGenerator generator;
+    vector<ShowTime> dailyShowtimes = generator.GenerateShowtimesForDay(movieShowing.GetRunningTime());
+    return dailyShowtimes;
 }
