@@ -29,4 +29,6 @@ add_executable(Assesment_1 main.cpp
         CashPayment.cpp
         CashPayment.h
         CardPayment.cpp
-        CardPayment.h)
+        CardPayment.h
+        BookingValidator.cpp
+        BookingValidator.h)

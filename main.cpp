@@ -5,26 +5,30 @@
 #include "MovieManager.h"
 #include "Ticket.h"
 #include "AdultTicket.h"
-#include "ChildTicket.h"
-#include "StudentTicket.h"
-#include "SeniorCitizenTicket.h"
 #include "Payment.h"
 #include "CashPayment.h"
-#include "CardPayment.h"
+#include "BookingValidator.h"
 
 int main() {
     MovieManager movieManager;
     cout << "All available films:" << endl;
     movieManager.DisplayAllMovies();
 
-    Ticket* customerTicket = new AdultTicket(2);
-    double amountDue = customerTicket->CalculateTotalPrice();
-    Payment* customerPayment = new CashPayment(amountDue, 25.00);
-    customerPayment->ProcessPayment();
+    Movie oceanDrift = *movieManager.FindMovieByTitle("Ocean Drift");
+    Screen screenTwo(2, 150, 148, oceanDrift, IMAX, "18:30", "20:38");
 
-    Booking firstBooking(1, "Alex Rahman", "Ocean Drift", 2, "2026-07-09", "18:30",
-                          customerTicket, customerPayment);
-    firstBooking.DisplayBookingInformation();
+    BookingValidator validator;
+
+    cout << endl << "Testing seat capacity check:" << endl;
+    bool capacityOk = validator.IsWithinSeatCapacity(screenTwo, 5);
+    cout << "5 tickets allowed? " << capacityOk << endl;
+
+    cout << endl << "Testing current week check:" << endl;
+    bool dateOk = validator.IsDateWithinCurrentWeek("2026-07-09", "2026-07-09", "2026-07-15");
+    cout << "Date within week? " << dateOk << endl;
+
+    bool dateTooLate = validator.IsDateWithinCurrentWeek("2026-07-20", "2026-07-09", "2026-07-15");
+    cout << "Later date within week? " << dateTooLate << endl;
 
     return 0;
 }
