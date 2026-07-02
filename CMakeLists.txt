@@ -37,4 +37,6 @@ add_executable(Assesment_1 main.cpp
         ShowTime.cpp
         ShowTime.h
         ShowtimeGenerator.cpp
-        ShowtimeGenerator.h)
+        ShowtimeGenerator.h
+        Schedule.cpp
+        Schedule.h)
