@@ -18,12 +18,15 @@ private:
     BookingValidator validator;
     Schedule schedule;
     int nextBookingId;
+    string currentWeekStart;
+    string currentWeekEnd;
 
     int ReadValidatedMenuChoice(int minOption, int maxOption);
     string ReadNonEmptyLine(string promptText);
     bool IsValidDateFormat(string dateText);
     Ticket* CreateTicketFromChoice(int ticketChoice, int ticketQuantity);
     Payment* CreatePaymentFromChoice(int paymentChoice, double amountDue);
+    void SetCurrentBookingWeek();
 
     void RunStaffBookingFlow();
     void RunManagerScheduleFlow();

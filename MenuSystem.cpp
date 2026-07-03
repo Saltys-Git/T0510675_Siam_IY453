@@ -83,6 +83,12 @@ Payment* MenuSystem::CreatePaymentFromChoice(int paymentChoice, double amountDue
     return selectedPayment;
 }
 
+void MenuSystem::SetCurrentBookingWeek() {
+    cout << "===== Setup: Enter Current Booking Week =====" << endl;
+    currentWeekStart = ReadNonEmptyLine("Enter this week's start date (Thursday, YYYY-MM-DD): ");
+    currentWeekEnd = ReadNonEmptyLine("Enter this week's end date (Wednesday, YYYY-MM-DD): ");
+}
+
 void MenuSystem::RunStaffBookingFlow() {
     movieManager.DisplayAllMovies();
 
@@ -120,8 +126,7 @@ void MenuSystem::RunStaffBookingFlow() {
         cout << "Booking cancelled due to insufficient seats." << endl;
         return;
     }
-
-    bool weekOk = validator.IsDateWithinCurrentWeek(showDate, "2026-07-09", "2026-07-15");
+    bool weekOk = validator.IsDateWithinCurrentWeek(showDate, currentWeekStart, currentWeekEnd);
     if (weekOk == false) {
         cout << "Booking cancelled: date outside current booking week." << endl;
         return;
@@ -142,16 +147,22 @@ void MenuSystem::RunStaffBookingFlow() {
 }
 
 void MenuSystem::RunManagerScheduleFlow() {
-    Movie oceanDrift = *movieManager.FindMovieByTitle("Ocean Drift");
-    Screen screenTwo(2, 150, 0, oceanDrift, IMAX, "", "");
+    movieManager.DisplayAllMovies();
 
-    string weekStartDate, weekEndDate;
-    cout << "Enter week start date (Thursday, YYYY-MM-DD): ";
-    cin >> weekStartDate;
-    cout << "Enter week end date (Wednesday, YYYY-MM-DD): ";
-    cin >> weekEndDate;
+    cin.ignore();
+    string movieTitle = ReadNonEmptyLine("Enter film title to schedule: ");
+    Movie* selectedMovie = movieManager.FindMovieByTitle(movieTitle);
 
-    vector<ScheduleEntry> weeklyEntries = schedule.GenerateWeeklySchedule(screenTwo, weekStartDate, weekEndDate);
+    if (selectedMovie == nullptr) {
+        cout << "Film not found. Returning to main menu." << endl;
+        return;
+    }
+
+    string weekStartDate = ReadNonEmptyLine("Enter week start date (Thursday, YYYY-MM-DD): ");
+    string weekEndDate = ReadNonEmptyLine("Enter week end date (Wednesday, YYYY-MM-DD): ");
+
+    Screen selectedScreen(2, 150, 0, *selectedMovie, IMAX, "", "");
+    vector<ScheduleEntry> weeklyEntries = schedule.GenerateWeeklySchedule(selectedScreen, weekStartDate, weekEndDate);
     schedule.SaveScheduleToFile(weeklyEntries);
     cout << "Generated and saved " << weeklyEntries.size() << " showings." << endl;
 }
@@ -174,6 +185,7 @@ void MenuSystem::RunBookingSearchFlow() {
 }
 
 void MenuSystem::RunMainMenu() {
+    SetCurrentBookingWeek();
     bool programRunning = true;
 
     while (programRunning == true) {
