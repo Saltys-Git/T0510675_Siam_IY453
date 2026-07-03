@@ -4,8 +4,6 @@
 
 #include "Movie.h"
 
-// Default constructor gives safe starting values so an uninitialised Movie
-// never holds garbage data if used before being properly set.
 Movie::Movie() {
     id = 0;
     runningTime = 0;

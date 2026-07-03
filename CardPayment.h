@@ -11,8 +11,6 @@ class CardPayment : public Payment {
 public:
     CardPayment(double dueAmount);
 
-    // Card details are passed in here only, checked, then discarded.
-    // They are never assigned to a class field, so nothing card-related is stored.
     bool ProcessPayment(string cardNumber, string cardCvc, string cardExpiryDate);
     bool ProcessPayment() override;
     string GetPaymentMethodName() override;

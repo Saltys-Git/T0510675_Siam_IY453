@@ -8,8 +8,6 @@
 CardPayment::CardPayment(double dueAmount) : Payment(dueAmount) {
 }
 
-// Basic validation only: correct lengths for card number, CVC and expiry format.
-// None of these values are saved anywhere after this function ends.
 bool CardPayment::ProcessPayment(string cardNumber, string cardCvc, string cardExpiryDate) {
     bool paymentSuccessful = false;
 
@@ -22,8 +20,6 @@ bool CardPayment::ProcessPayment(string cardNumber, string cardCvc, string cardE
     return paymentSuccessful;
 }
 
-// Required to satisfy the pure virtual function from Payment, but card payments
-// must always go through the detailed overload above, so this version fails safely.
 bool CardPayment::ProcessPayment() {
     cout << "Card payment requires card details. Use the other ProcessPayment method." << endl;
     return false;

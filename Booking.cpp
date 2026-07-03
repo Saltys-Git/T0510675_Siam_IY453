@@ -18,15 +18,11 @@ Booking::Booking(int bookingId, string bookingCustomerName, string bookingMovieT
     payment = bookingPayment;
 }
 
-// Booking owns the ticket and payment objects it was given, so it is
-// responsible for freeing them when the booking itself is destroyed.
 Booking::~Booking() {
     delete ticket;
     delete payment;
 }
 
-// Uses the ticket's own polymorphic price calculation, so this works
-// correctly no matter which ticket subclass was used.
 double Booking::CalculateTotalCost() {
     double totalCost = ticket->CalculateTotalPrice();
     return totalCost;

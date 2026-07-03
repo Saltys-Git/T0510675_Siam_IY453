@@ -43,6 +43,7 @@ public:
     vector<ScheduleEntry> GenerateWeeklySchedule(Screen screen, string weekStartDate, string weekEndDate);
     void SaveScheduleToFile(vector<ScheduleEntry> weeklyEntries);
     void DisplayScheduleFromFile();
+    void ClearScheduleFile();
 };
 
 #endif //ASSESMENT_1_SCHEDULE_H

@@ -41,4 +41,6 @@ add_executable(Assesment_1 main.cpp
         Schedule.cpp
         Schedule.h
         MenuSystem.cpp
-        MenuSystem.h)
+        MenuSystem.h
+        ManagerAuth.cpp
+        ManagerAuth.h)

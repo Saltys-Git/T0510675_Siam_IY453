@@ -9,7 +9,6 @@ CashPayment::CashPayment(double dueAmount, double cashReceived) : Payment(dueAmo
     changeGiven = 0.0;
 }
 
-// Single return variable used so there is only one exit point from the function.
 bool CashPayment::ProcessPayment() {
     bool paymentSuccessful = false;
 

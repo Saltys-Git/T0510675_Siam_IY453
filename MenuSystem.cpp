@@ -13,10 +13,10 @@
 
 MenuSystem::MenuSystem() {
     nextBookingId = 1;
+    nextMovieId = 1;
 }
 
 // Keeps asking until a valid integer within range is entered.
-// Centralised here so every menu re-uses the same input safety logic (DRY).
 int MenuSystem::ReadValidatedMenuChoice(int minOption, int maxOption) {
     int userChoice = 0;
     bool validInputReceived = false;
@@ -39,7 +39,7 @@ int MenuSystem::ReadValidatedMenuChoice(int minOption, int maxOption) {
     return userChoice;
 }
 
-// Only responsible for turning a menu number into the correct Ticket subclass.
+// only responsible for turning a menu number into the correct Ticket subclass.
 Ticket* MenuSystem::CreateTicketFromChoice(int ticketChoice, int ticketQuantity) {
     Ticket* selectedTicket = nullptr;
 
@@ -56,7 +56,7 @@ Ticket* MenuSystem::CreateTicketFromChoice(int ticketChoice, int ticketQuantity)
     return selectedTicket;
 }
 
-// Only responsible for turning a menu number into the correct Payment subclass.
+// only responsible for turning a menu number into the correct Payment subclass.
 Payment* MenuSystem::CreatePaymentFromChoice(int paymentChoice, double amountDue) {
     Payment* selectedPayment = nullptr;
 
@@ -87,6 +87,75 @@ void MenuSystem::SetCurrentBookingWeek() {
     cout << "===== Setup: Enter Current Booking Week =====" << endl;
     currentWeekStart = ReadNonEmptyLine("Enter this week's start date (Thursday, YYYY-MM-DD): ");
     currentWeekEnd = ReadNonEmptyLine("Enter this week's end date (Wednesday, YYYY-MM-DD): ");
+}
+
+void MenuSystem::RunAddMovieFlow() {
+    cin.ignore();
+    string title = ReadNonEmptyLine("Enter film title: ");
+    string description = ReadNonEmptyLine("Enter description: ");
+    string genre = ReadNonEmptyLine("Enter genre: ");
+    string mainStar = ReadNonEmptyLine("Enter main star: ");
+    string filmDistributor = ReadNonEmptyLine("Enter film distributor: ");
+    string releaseDate = ReadNonEmptyLine("Enter release date (YYYY-MM-DD): ");
+
+    cout << "Enter running time in minutes: ";
+    int runningTime = ReadValidatedMenuChoice(1, 500);
+
+    Movie newMovie(nextMovieId, title, description, genre, mainStar, filmDistributor, runningTime, releaseDate);
+    movieManager.AddMovie(newMovie);
+    nextMovieId = nextMovieId + 1;
+
+    cout << "Film added successfully." << endl;
+}
+
+void MenuSystem::RunRemoveMovieFlow() {
+    movieManager.DisplayAllMovies();
+
+    cout << "Enter the ID of the film to remove: ";
+    int movieIdToRemove = ReadValidatedMenuChoice(1, 9999);
+
+    bool removalSuccessful = movieManager.RemoveMovieById(movieIdToRemove);
+    if (removalSuccessful == true) {
+        cout << "Film removed successfully." << endl;
+    } else {
+        cout << "No film found with that ID." << endl;
+    }
+}
+
+void MenuSystem::RunAddScheduleFlow() {
+    movieManager.DisplayAllMovies();
+
+    cin.ignore();
+    string movieTitle = ReadNonEmptyLine("Enter film title to schedule: ");
+    Movie* selectedMovie = movieManager.FindMovieByTitle(movieTitle);
+
+    if (selectedMovie == nullptr) {
+        cout << "Film not found." << endl;
+        return;
+    }
+
+    string weekStartDate = ReadNonEmptyLine("Enter week start date (Thursday, YYYY-MM-DD): ");
+    string weekEndDate = ReadNonEmptyLine("Enter week end date (Wednesday, YYYY-MM-DD): ");
+
+    Screen selectedScreen(2, 150, 0, *selectedMovie, IMAX, "", "");
+    vector<ScheduleEntry> weeklyEntries = schedule.GenerateWeeklySchedule(selectedScreen, weekStartDate, weekEndDate);
+    schedule.SaveScheduleToFile(weeklyEntries);
+    cout << "Generated and saved " << weeklyEntries.size() << " showings." << endl;
+}
+
+
+void MenuSystem::RunRemoveScheduleFlow() {
+    cout << "Current schedule:" << endl;
+    schedule.DisplayScheduleFromFile();
+
+    cout << "Remove all schedule data? (1=Yes 2=No): ";
+    int confirmChoice = ReadValidatedMenuChoice(1, 2);
+
+    if (confirmChoice == 1) {
+        schedule.ClearScheduleFile();
+    } else {
+        cout << "Removal cancelled." << endl;
+    }
 }
 
 void MenuSystem::RunStaffBookingFlow() {
@@ -145,27 +214,35 @@ void MenuSystem::RunStaffBookingFlow() {
     bookingManager.SaveBookingToFile(newBooking);
     nextBookingId = nextBookingId + 1;
 }
+void MenuSystem::RunManagerMenu() {
+    bool managerSessionActive = true;
 
-void MenuSystem::RunManagerScheduleFlow() {
-    movieManager.DisplayAllMovies();
+    while (managerSessionActive == true) {
+        cout << endl << "===== Manager Menu =====" << endl;
+        cout << "1. Add movie" << endl;
+        cout << "2. Remove movie" << endl;
+        cout << "3. Add schedule" << endl;
+        cout << "4. Remove schedule" << endl;
+        cout << "5. Log out" << endl;
 
-    cin.ignore();
-    string movieTitle = ReadNonEmptyLine("Enter film title to schedule: ");
-    Movie* selectedMovie = movieManager.FindMovieByTitle(movieTitle);
+        int managerChoice = ReadValidatedMenuChoice(1, 5);
 
-    if (selectedMovie == nullptr) {
-        cout << "Film not found. Returning to main menu." << endl;
-        return;
+        if (managerChoice == 1) {
+            RunAddMovieFlow();
+        } else if (managerChoice == 2) {
+            RunRemoveMovieFlow();
+        } else if (managerChoice == 3) {
+            RunAddScheduleFlow();
+        } else if (managerChoice == 4) {
+            RunRemoveScheduleFlow();
+        } else {
+            cout << "Logging out of manager menu." << endl;
+            managerSessionActive = false;
+        }
     }
-
-    string weekStartDate = ReadNonEmptyLine("Enter week start date (Thursday, YYYY-MM-DD): ");
-    string weekEndDate = ReadNonEmptyLine("Enter week end date (Wednesday, YYYY-MM-DD): ");
-
-    Screen selectedScreen(2, 150, 0, *selectedMovie, IMAX, "", "");
-    vector<ScheduleEntry> weeklyEntries = schedule.GenerateWeeklySchedule(selectedScreen, weekStartDate, weekEndDate);
-    schedule.SaveScheduleToFile(weeklyEntries);
-    cout << "Generated and saved " << weeklyEntries.size() << " showings." << endl;
 }
+
+
 
 void MenuSystem::RunBookingSearchFlow() {
     cout << "Search by (1=Name 2=Film 3=Date): ";
@@ -191,7 +268,7 @@ void MenuSystem::RunMainMenu() {
     while (programRunning == true) {
         cout << endl << "===== Cinema Booking System =====" << endl;
         cout << "1. Book a ticket" << endl;
-        cout << "2. Manager: create weekly schedule" << endl;
+        cout << "2. Manager login" << endl;
         cout << "3. Search bookings" << endl;
         cout << "4. Exit" << endl;
 
@@ -200,7 +277,9 @@ void MenuSystem::RunMainMenu() {
         if (mainChoice == 1) {
             RunStaffBookingFlow();
         } else if (mainChoice == 2) {
-            RunManagerScheduleFlow();
+            if (managerAuth.VerifyManagerAccess() == true) {
+                RunManagerMenu();
+            }
         } else if (mainChoice == 3) {
             RunBookingSearchFlow();
         } else {

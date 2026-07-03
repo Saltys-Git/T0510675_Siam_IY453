@@ -9,6 +9,7 @@
 #include "BookingManager.h"
 #include "BookingValidator.h"
 #include "Schedule.h"
+#include "ManagerAuth.h"
 using namespace std;
 
 class MenuSystem {
@@ -17,7 +18,9 @@ private:
     BookingManager bookingManager;
     BookingValidator validator;
     Schedule schedule;
+    ManagerAuth managerAuth;
     int nextBookingId;
+    int nextMovieId;
     string currentWeekStart;
     string currentWeekEnd;
 
@@ -26,11 +29,16 @@ private:
     bool IsValidDateFormat(string dateText);
     Ticket* CreateTicketFromChoice(int ticketChoice, int ticketQuantity);
     Payment* CreatePaymentFromChoice(int paymentChoice, double amountDue);
-    void SetCurrentBookingWeek();
 
     void RunStaffBookingFlow();
-    void RunManagerScheduleFlow();
     void RunBookingSearchFlow();
+    void SetCurrentBookingWeek();
+
+    void RunManagerMenu();
+    void RunAddMovieFlow();
+    void RunRemoveMovieFlow();
+    void RunAddScheduleFlow();
+    void RunRemoveScheduleFlow();
 
 public:
     MenuSystem();

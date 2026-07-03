@@ -112,3 +112,15 @@ void Schedule::DisplayScheduleFromFile() {
         cout << "No schedule file found yet." << endl;
     }
 }
+
+void Schedule::ClearScheduleFile() {
+    ofstream outputFile;
+    outputFile.open(scheduleFilePath, ios::trunc);
+
+    if (outputFile.is_open() == true) {
+        outputFile.close();
+        cout << "Schedule cleared." << endl;
+    } else {
+        cout << "Error: could not clear schedule file." << endl;
+    }
+}

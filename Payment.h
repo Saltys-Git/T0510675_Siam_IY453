@@ -16,7 +16,7 @@ public:
     Payment(double dueAmount);
     virtual ~Payment();
 
-    // Pure virtual function forces every subclass to define its own processing logic.
+    // pure virtual function
     virtual bool ProcessPayment() = 0;
     virtual string GetPaymentMethodName() = 0;
 

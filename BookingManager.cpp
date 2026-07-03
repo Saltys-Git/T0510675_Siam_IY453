@@ -11,8 +11,6 @@ BookingManager::BookingManager() {
     bookingsFilePath = "bookings.csv";
 }
 
-// One line per booking: id,customerName,movieTitle,screenId,showDate,showTime,
-// ticketType,quantity,paymentMethod,totalCost
 string BookingManager::BuildCsvLine(Booking& booking) {
     ostringstream csvLine;
     csvLine << booking.GetId() << ","
@@ -58,8 +56,7 @@ void BookingManager::DisplayAllBookingsFromFile() {
     }
 }
 
-// Splits a single CSV line into its fields by comma, used by all three
-// search functions below so the splitting logic is written only once (DRY).
+// splits a single CSV line into its fields by comma
 vector<string> SplitCsvLine(string line) {
     vector<string> fields;
     stringstream lineStream(line);
