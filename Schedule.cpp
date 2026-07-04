@@ -45,7 +45,6 @@ Schedule::Schedule() {
     scheduleFilePath = "schedule.csv";
 }
 
-// One line per showing slot: screenId,movieTitle,weekStartDate,weekEndDate,startTime,endTime
 string Schedule::BuildCsvLine(ScheduleEntry entry) {
     ostringstream csvLine;
     csvLine << entry.GetScreenId() << ","
@@ -59,8 +58,6 @@ string Schedule::BuildCsvLine(ScheduleEntry entry) {
     return finishedLine;
 }
 
-// Uses the screen's own showtime generator (built in Phase 8) to work out
-// how many showings fit in a day, then creates one ScheduleEntry per showing.
 vector<ScheduleEntry> Schedule::GenerateWeeklySchedule(Screen screen, string weekStartDate, string weekEndDate) {
     vector<ScheduleEntry> weeklyEntries;
     vector<ShowTime> dailyShowtimes = screen.GenerateDailyShowtimes();

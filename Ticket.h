@@ -16,7 +16,6 @@ public:
     Ticket(int numberOfTickets);
     virtual ~Ticket();
 
-    // Pure virtual functions force every subclass to define its own price and label.
     virtual double GetUnitPrice() = 0;
     virtual string GetTicketTypeName() = 0;
 

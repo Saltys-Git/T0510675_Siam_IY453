@@ -4,8 +4,6 @@
 
 #include "ShowtimeGenerator.h"
 
-// Cinema rules from the brief: earliest show 10:15 (615 mins after midnight),
-// closes 23:30 (1410 mins), 25 minute cleaning gap required between shows.
 ShowtimeGenerator::ShowtimeGenerator() {
     earliestStartMinutes = 615;
     closingTimeMinutes = 1410;
@@ -28,9 +26,6 @@ string ShowtimeGenerator::ConvertMinutesToTimeString(int totalMinutes) {
     return timeText;
 }
 
-// Keeps adding shows starting at earliestStartMinutes, moving forward by
-// running time plus the cleaning gap, until a show would end after closing.
-// A show does not need to fit exactly into the day, it just cannot end late.
 vector<ShowTime> ShowtimeGenerator::GenerateShowtimesForDay(int movieRunningTimeMinutes) {
     vector<ShowTime> dailyShowtimes;
     int currentStartMinutes = earliestStartMinutes;

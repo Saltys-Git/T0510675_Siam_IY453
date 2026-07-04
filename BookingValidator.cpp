@@ -8,7 +8,6 @@
 BookingValidator::BookingValidator() {
 }
 
-// Checks the screen's own booked/capacity numbers
 bool BookingValidator::IsWithinSeatCapacity(Screen screen, int ticketsRequested) {
     bool withinCapacity = false;
     int seatsRemaining = screen.GetSeatCapacity() - screen.GetSeatBooked();
@@ -22,7 +21,6 @@ bool BookingValidator::IsWithinSeatCapacity(Screen screen, int ticketsRequested)
     return withinCapacity;
 }
 
-// expects dates in YYYY-MM-DD format.
 bool BookingValidator::ConvertDateToComparableNumber(string date, int& comparableNumber) {
     bool conversionSuccessful = false;
 
@@ -39,7 +37,6 @@ bool BookingValidator::ConvertDateToComparableNumber(string date, int& comparabl
     return conversionSuccessful;
 }
 
-// The current week's start (Thursday) and end (Wednesday) dates are passed in by the caller, so this function only handles the comparison logic itself.
 bool BookingValidator::IsDateWithinCurrentWeek(string requestedDate, string weekStartDate, string weekEndDate) {
     bool withinCurrentWeek = false;
     int requestedNumber = 0;

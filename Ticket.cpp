@@ -15,7 +15,6 @@ Ticket::Ticket(int numberOfTickets) {
 Ticket::~Ticket() {
 }
 
-// Works for any subclass because GetUnitPrice() is resolved polymorphically.
 double Ticket::CalculateTotalPrice() {
     double totalPrice = quantity * GetUnitPrice();
     return totalPrice;

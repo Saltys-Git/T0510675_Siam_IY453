@@ -60,8 +60,6 @@ bool Screen::BookSeat(int ticketNumber) {
     return bookingSuccessful;
 }
 
-// Delegates the actual time math to ShowtimeGenerator, keeping this
-// function short and Screen focused on representing a screen, not doing time arithmetic.
 vector<ShowTime> Screen::GenerateDailyShowtimes() {
     ShowtimeGenerator generator;
     vector<ShowTime> dailyShowtimes = generator.GenerateShowtimesForDay(movieShowing.GetRunningTime());
