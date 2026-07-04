@@ -96,12 +96,23 @@ void MenuSystem::RunAddMovieFlow() {
     string genre = ReadNonEmptyLine("Enter genre: ");
     string mainStar = ReadNonEmptyLine("Enter main star: ");
     string filmDistributor = ReadNonEmptyLine("Enter film distributor: ");
-    string releaseDate = ReadNonEmptyLine("Enter release date (YYYY-MM-DD): ");
+
+    string releaseDate;
+    bool dateAccepted = false;
+    while (dateAccepted == false) {
+        releaseDate = ReadNonEmptyLine("Enter release date (YYYY-MM-DD): ");
+        if (IsValidDateFormat(releaseDate) == true) {
+            dateAccepted = true;
+        } else {
+            cout << "Invalid format. Use YYYY-MM-DD, e.g. 2026-07-09." << endl;
+        }
+    }
 
     cout << "Enter running time in minutes: ";
     int runningTime = ReadValidatedMenuChoice(1, 500);
 
-    Movie newMovie(nextMovieId, title, description, genre, mainStar, filmDistributor, runningTime, releaseDate);
+    Movie newMovie(nextMovieId, title, description, genre, mainStar,
+                   filmDistributor, runningTime, releaseDate);
     movieManager.AddMovie(newMovie);
     nextMovieId = nextMovieId + 1;
 
@@ -173,7 +184,7 @@ void MenuSystem::RunStaffBookingFlow() {
 
     string showDate;
     bool dateAccepted = false;
-    while (dateAccepted == true == false) {
+    while (dateAccepted == false) {
         showDate = ReadNonEmptyLine("Enter show date (YYYY-MM-DD): ");
         if (IsValidDateFormat(showDate) == true) {
             dateAccepted = true;
@@ -293,7 +304,7 @@ string MenuSystem::ReadNonEmptyLine(string promptText) {
     string enteredText;
     bool validTextReceived = false;
 
-    while (validTextReceived == true == false) {
+    while (validTextReceived == false) {
         cout << promptText;
         getline(cin, enteredText);
 
