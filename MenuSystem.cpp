@@ -14,6 +14,9 @@
 MenuSystem::MenuSystem() {
     nextBookingId = 1;
     nextMovieId = 1;
+    currentWeekStart = "";
+    currentWeekEnd = "";
+    schedule.GetLatestWeekDates(&currentWeekStart, &currentWeekEnd);
 }
 
 // Keeps asking until a valid integer within range is entered.

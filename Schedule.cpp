@@ -121,3 +121,45 @@ void Schedule::ClearScheduleFile() {
         cout << "Error: could not clear schedule file." << endl;
     }
 }
+
+bool Schedule::GetLatestWeekDates(string* weekStartOut, string* weekEndOut) {
+    bool datesFound = false;
+    ifstream inputFile;
+    inputFile.open(scheduleFilePath);
+
+    if (inputFile.is_open() == true) {
+        string currentLine;
+        string lastLine;
+        bool moreLines = true;
+
+        while (moreLines == true) {
+            moreLines = (bool)getline(inputFile, currentLine);
+            if (moreLines == true && currentLine.empty() == false) {
+                lastLine = currentLine;
+            }
+        }
+        inputFile.close();
+
+        if (lastLine.empty() == false) {
+            stringstream lineStream(lastLine);
+            string field;
+            vector<string> fields;
+            bool moreFields = true;
+
+            while (moreFields == true) {
+                moreFields = (bool)getline(lineStream, field, ',');
+                if (moreFields == true) {
+                    fields.push_back(field);
+                }
+            }
+
+            if (fields.size() == 6) {
+                *weekStartOut = fields[2];
+                *weekEndOut = fields[3];
+                datesFound = true;
+            }
+        }
+    }
+
+    return datesFound;
+}

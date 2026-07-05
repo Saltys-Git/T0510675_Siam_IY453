@@ -44,6 +44,7 @@ public:
     void SaveScheduleToFile(vector<ScheduleEntry> weeklyEntries);
     void DisplayScheduleFromFile();
     void ClearScheduleFile();
+    bool GetLatestWeekDates(string* weekStartOut, string* weekEndOut);
 };
 
 #endif //ASSESMENT_1_SCHEDULE_H
