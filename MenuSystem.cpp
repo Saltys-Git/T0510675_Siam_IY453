@@ -217,7 +217,15 @@ void MenuSystem::RunStaffBookingFlow() {
         }
     }
 
-    string showTime = ReadNonEmptyLine("Enter show time (HH:MM): ");
+    string showTime;
+    bool timeAccepted = false;
+    while (timeAccepted == true == false) {
+        showTime = ReadNonEmptyLine("Enter show time (HH:MM): ");
+        timeAccepted = IsValidTimeFormat(showTime);
+        if (timeAccepted == false) {
+            cout << "Invalid format. Use HH:MM, e.g. 18:30." << endl;
+        }
+    }
 
     cout << "Ticket type (1=Adult 2=Child 3=Student 4=Senior): ";
     int ticketChoice = ReadValidatedMenuChoice(1, 4);
@@ -330,6 +338,16 @@ string MenuSystem::ReadNonEmptyLine(string promptText) {
         cout << promptText;
         getline(cin, enteredText);
 
+        int startPosition = 0;
+        int endPosition = (int)enteredText.length() - 1;
+        while (startPosition <= endPosition && isspace(enteredText[startPosition])) {
+            startPosition = startPosition + 1;
+        }
+        while (endPosition >= startPosition && isspace(enteredText[endPosition])) {
+            endPosition = endPosition - 1;
+        }
+        enteredText = enteredText.substr(startPosition, endPosition - startPosition + 1);
+
         if (enteredText.empty() == true) {
             cout << "Input cannot be empty. Please try again." << endl;
         } else {
@@ -348,6 +366,34 @@ bool MenuSystem::IsValidDateFormat(string dateText) {
         formatIsValid = false;
     } else if (dateText[4] != '-' || dateText[7] != '-') {
         formatIsValid = false;
+    }
+
+    return formatIsValid;
+}
+
+
+bool MenuSystem::IsValidTimeFormat(string timeText) {
+    bool formatIsValid = true;
+
+    if (timeText.length() != 5) {
+        formatIsValid = false;
+    } else if (timeText[2] != ':') {
+        formatIsValid = false;
+    } else {
+        string hourPart = timeText.substr(0, 2);
+        string minutePart = timeText.substr(3, 2);
+        bool hourIsDigits = (isdigit(hourPart[0]) && isdigit(hourPart[1]));
+        bool minuteIsDigits = (isdigit(minutePart[0]) && isdigit(minutePart[1]));
+
+        if (hourIsDigits == false || minuteIsDigits == false) {
+            formatIsValid = false;
+        } else {
+            int hourValue = stoi(hourPart);
+            int minuteValue = stoi(minutePart);
+            if (hourValue > 23 || minuteValue > 59) {
+                formatIsValid = false;
+            }
+        }
     }
 
     return formatIsValid;

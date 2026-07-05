@@ -36,12 +36,23 @@ bool MovieManager::RemoveMovieById(int movieId) {
     return movieRemoved;
 }
 
+string ConvertToLowercase(string text) {
+    string lowercaseText = text;
+    int index = 0;
+    while (index < lowercaseText.length()) {
+        lowercaseText[index] = (char)tolower(lowercaseText[index]);
+        index = index + 1;
+    }
+    return lowercaseText;
+}
+
 Movie* MovieManager::FindMovieByTitle(string searchTitle) {
     Movie* foundMovie = nullptr;
     int index = 0;
+    string searchTitleLower = ConvertToLowercase(searchTitle);
 
     while (index < movies.size() && foundMovie == nullptr) {
-        if (movies[index].GetTitle() == searchTitle) {
+        if (ConvertToLowercase(movies[index].GetTitle()) == searchTitleLower) {
             foundMovie = &movies[index];
         }
         index = index + 1;

@@ -27,6 +27,7 @@ private:
     int ReadValidatedMenuChoice(int minOption, int maxOption);
     string ReadNonEmptyLine(string promptText);
     bool IsValidDateFormat(string dateText);
+    bool IsValidTimeFormat(string timeText);
     Ticket* CreateTicketFromChoice(int ticketChoice, int ticketQuantity);
     Payment* CreatePaymentFromChoice(int paymentChoice, double amountDue);
 
