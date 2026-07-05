@@ -11,8 +11,18 @@ ManagerAuth::ManagerAuth() {
 
 bool ManagerAuth::VerifyManagerAccess() {
     string enteredCode;
-    cout << "Enter manager access code: ";
-    cin >> enteredCode;
+    bool codeEntered = false;
+
+    while (codeEntered == false) {
+        cout << "Enter manager access code: ";
+        getline(cin, enteredCode);
+
+        if (enteredCode.empty() == true) {
+            cout << "Code cannot be empty. Please try again." << endl;
+        } else {
+            codeEntered = true;
+        }
+    }
 
     bool accessGranted = false;
     if (enteredCode == managerAccessCode) {

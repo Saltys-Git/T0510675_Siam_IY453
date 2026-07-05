@@ -321,6 +321,7 @@ void MenuSystem::RunMainMenu() {
         if (mainChoice == 1) {
             RunStaffBookingFlow();
         } else if (mainChoice == 2) {
+            cin.ignore();
             if (managerAuth.VerifyManagerAccess() == true) {
                 RunManagerMenu();
             }
