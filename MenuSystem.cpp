@@ -14,6 +14,8 @@
 MenuSystem::MenuSystem() {
     nextBookingId = 1;
     nextMovieId = 1;
+    currentWeekStart = "";
+    currentWeekEnd = "";
 }
 
 // Keeps asking until a valid integer within range is entered.
@@ -145,15 +147,35 @@ void MenuSystem::RunAddScheduleFlow() {
         return;
     }
 
-    string weekStartDate = ReadNonEmptyLine("Enter week start date (Thursday, YYYY-MM-DD): ");
-    string weekEndDate = ReadNonEmptyLine("Enter week end date (Wednesday, YYYY-MM-DD): ");
+    string weekStartDate;
+    bool startDateAccepted = false;
+    while (startDateAccepted == true == false) {
+        weekStartDate = ReadNonEmptyLine("Enter week start date (Thursday, YYYY-MM-DD): ");
+        startDateAccepted = IsValidDateFormat(weekStartDate);
+        if (startDateAccepted == false) {
+            cout << "Invalid format. Use YYYY-MM-DD." << endl;
+        }
+    }
+
+    string weekEndDate;
+    bool endDateAccepted = false;
+    while (endDateAccepted == true == false) {
+        weekEndDate = ReadNonEmptyLine("Enter week end date (Wednesday, YYYY-MM-DD): ");
+        endDateAccepted = IsValidDateFormat(weekEndDate);
+        if (endDateAccepted == false) {
+            cout << "Invalid format. Use YYYY-MM-DD." << endl;
+        }
+    }
 
     Screen selectedScreen(2, 150, 0, *selectedMovie, IMAX, "", "");
     vector<ScheduleEntry> weeklyEntries = schedule.GenerateWeeklySchedule(selectedScreen, weekStartDate, weekEndDate);
     schedule.SaveScheduleToFile(weeklyEntries);
+
+    currentWeekStart = weekStartDate;
+    currentWeekEnd = weekEndDate;
+
     cout << "Generated and saved " << weeklyEntries.size() << " showings." << endl;
 }
-
 
 void MenuSystem::RunRemoveScheduleFlow() {
     cout << "Current schedule:" << endl;
@@ -170,6 +192,11 @@ void MenuSystem::RunRemoveScheduleFlow() {
 }
 
 void MenuSystem::RunStaffBookingFlow() {
+    if (currentWeekStart.empty() == true) {
+        cout << "No schedule has been created yet. Ask the manager to add one first." << endl;
+        return;
+    }
+
     movieManager.DisplayAllMovies();
 
     cin.ignore();
@@ -184,12 +211,11 @@ void MenuSystem::RunStaffBookingFlow() {
 
     string showDate;
     bool dateAccepted = false;
-    while (dateAccepted == false) {
+    while (dateAccepted == true == false) {
         showDate = ReadNonEmptyLine("Enter show date (YYYY-MM-DD): ");
-        if (IsValidDateFormat(showDate) == true) {
-            dateAccepted = true;
-        } else {
-            cout << "Invalid format. Use YYYY-MM-DD, e.g. 2026-07-09." << endl;
+        dateAccepted = IsValidDateFormat(showDate);
+        if (dateAccepted == false) {
+            cout << "Invalid format. Use YYYY-MM-DD." << endl;
         }
     }
 
@@ -201,14 +227,11 @@ void MenuSystem::RunStaffBookingFlow() {
     int ticketQuantity = ReadValidatedMenuChoice(1, 250);
 
     Screen currentScreen(1, 150, 0, *selectedMovie, IMAX, "", "");
-    bool capacityOk = validator.IsWithinSeatCapacity(currentScreen, ticketQuantity);
-    if (capacityOk == false) {
-        cout << "Booking cancelled due to insufficient seats." << endl;
+    if (validator.IsWithinSeatCapacity(currentScreen, ticketQuantity) == false) {
         return;
     }
-    bool weekOk = validator.IsDateWithinCurrentWeek(showDate, currentWeekStart, currentWeekEnd);
-    if (weekOk == false) {
-        cout << "Booking cancelled: date outside current booking week." << endl;
+
+    if (validator.IsDateWithinCurrentWeek(showDate, currentWeekStart, currentWeekEnd) == false) {
         return;
     }
 
@@ -225,6 +248,8 @@ void MenuSystem::RunStaffBookingFlow() {
     bookingManager.SaveBookingToFile(newBooking);
     nextBookingId = nextBookingId + 1;
 }
+
+
 void MenuSystem::RunManagerMenu() {
     bool managerSessionActive = true;
 
@@ -273,7 +298,6 @@ void MenuSystem::RunBookingSearchFlow() {
 }
 
 void MenuSystem::RunMainMenu() {
-    SetCurrentBookingWeek();
     bool programRunning = true;
 
     while (programRunning == true) {
