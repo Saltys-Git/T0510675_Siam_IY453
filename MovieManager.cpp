@@ -50,6 +50,20 @@ Movie* MovieManager::FindMovieByTitle(string searchTitle) {
     return foundMovie;
 }
 
+Movie* MovieManager::FindMovieById(int movieId) {
+    Movie* foundMovie = nullptr;
+    int index = 0;
+
+    while (index < movies.size() && foundMovie == nullptr) {
+        if (movies[index].GetId() == movieId) {
+            foundMovie = &movies[index];
+        }
+        index = index + 1;
+    }
+
+    return foundMovie;
+}
+
 void MovieManager::DisplayAllMovies() {
     int index = 0;
 
@@ -71,6 +85,7 @@ string MovieManager::BuildCsvLine(Movie movie) {
             << movie.GetTitle() << ","
             << movie.GetDescription() << ","
             << movie.GetGenre() << ","
+            << movie.GetCertificate() << ","
             << movie.GetMainStar() << ","
             << movie.GetFilmDistributor() << ","
             << movie.GetRunningTime() << ","
@@ -93,8 +108,14 @@ Movie MovieManager::ParseCsvLine(string csvLine) {
         }
     }
 
-    Movie parsedMovie(stoi(fields[0]), fields[1], fields[2], fields[3],
-                       fields[5], fields[6], stoi(fields[7]), fields[8]);
+    Movie parsedMovie;
+    if (fields.size() == 9) {
+        parsedMovie = Movie(stoi(fields[0]), fields[1], fields[2], fields[3], fields[4],
+                             fields[5], fields[6], stoi(fields[7]), fields[8]);
+    } else {
+        cout << "Warning: skipped a corrupted movie record in the file." << endl;
+    }
+
     return parsedMovie;
 }
 
@@ -126,7 +147,9 @@ void MovieManager::LoadMoviesFromFile() {
             moreLines = (bool)getline(inputFile, currentLine);
             if (moreLines == true && currentLine.empty() == false) {
                 Movie loadedMovie = ParseCsvLine(currentLine);
-                movies.push_back(loadedMovie);
+                if (loadedMovie.GetId() != 0) {
+                    movies.push_back(loadedMovie);
+                }
             }
         }
         inputFile.close();

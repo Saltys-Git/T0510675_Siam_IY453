@@ -23,6 +23,7 @@ public:
     void AddMovie(Movie newMovie);
     bool RemoveMovieById(int movieId);
     Movie* FindMovieByTitle(string searchTitle);
+    Movie* FindMovieById(int movieId);
     void DisplayAllMovies();
     int GetMovieCount();
 

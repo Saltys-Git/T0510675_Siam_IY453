@@ -14,8 +14,6 @@
 MenuSystem::MenuSystem() {
     nextBookingId = 1;
     nextMovieId = 1;
-    currentWeekStart = "";
-    currentWeekEnd = "";
 }
 
 // Keeps asking until a valid integer within range is entered.
@@ -96,24 +94,24 @@ void MenuSystem::RunAddMovieFlow() {
     string title = ReadNonEmptyLine("Enter film title: ");
     string description = ReadNonEmptyLine("Enter description: ");
     string genre = ReadNonEmptyLine("Enter genre: ");
+    string certificate = ReadNonEmptyLine("Enter certificate (e.g. 12A): ");
     string mainStar = ReadNonEmptyLine("Enter main star: ");
     string filmDistributor = ReadNonEmptyLine("Enter film distributor: ");
 
     string releaseDate;
     bool dateAccepted = false;
-    while (dateAccepted == false) {
+    while (dateAccepted == true == false) {
         releaseDate = ReadNonEmptyLine("Enter release date (YYYY-MM-DD): ");
-        if (IsValidDateFormat(releaseDate) == true) {
-            dateAccepted = true;
-        } else {
-            cout << "Invalid format. Use YYYY-MM-DD, e.g. 2026-07-09." << endl;
+        dateAccepted = IsValidDateFormat(releaseDate);
+        if (dateAccepted == false) {
+            cout << "Invalid format. Use YYYY-MM-DD." << endl;
         }
     }
 
     cout << "Enter running time in minutes: ";
     int runningTime = ReadValidatedMenuChoice(1, 500);
 
-    Movie newMovie(nextMovieId, title, description, genre, mainStar,
+    Movie newMovie(nextMovieId, title, description, genre, certificate, mainStar,
                    filmDistributor, runningTime, releaseDate);
     movieManager.AddMovie(newMovie);
     nextMovieId = nextMovieId + 1;

@@ -4,8 +4,8 @@
 
 #ifndef ASSESMENT_1_MOVIE_H
 #define ASSESMENT_1_MOVIE_H
-#include <iostream>
 #include <string>
+#include <iostream>
 using namespace std;
 
 class Movie {
@@ -14,6 +14,7 @@ private:
     string title;
     string description;
     string genre;
+    string certificate;
     string mainStar;
     string filmDistributor;
     int runningTime;
@@ -22,13 +23,14 @@ private:
 public:
     Movie();
     Movie(int movieId, string movieTitle, string movieDescription, string movieGenre,
-          string movieMainStar, string movieFilmDistributor, int movieRunningTime,
-          string movieReleaseDate);
+          string movieCertificate, string movieMainStar, string movieFilmDistributor,
+          int movieRunningTime, string movieReleaseDate);
 
     int GetId();
     string GetTitle();
     string GetDescription();
     string GetGenre();
+    string GetCertificate();
     string GetMainStar();
     string GetFilmDistributor();
     int GetRunningTime();

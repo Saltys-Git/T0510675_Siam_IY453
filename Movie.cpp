@@ -10,12 +10,13 @@ Movie::Movie() {
 }
 
 Movie::Movie(int movieId, string movieTitle, string movieDescription, string movieGenre,
-             string movieMainStar, string movieFilmDistributor, int movieRunningTime,
-             string movieReleaseDate) {
+             string movieCertificate, string movieMainStar, string movieFilmDistributor,
+             int movieRunningTime, string movieReleaseDate) {
     id = movieId;
     title = movieTitle;
     description = movieDescription;
     genre = movieGenre;
+    certificate = movieCertificate;
     mainStar = movieMainStar;
     filmDistributor = movieFilmDistributor;
     runningTime = movieRunningTime;
@@ -38,6 +39,10 @@ string Movie::GetGenre() {
     return genre;
 }
 
+string Movie::GetCertificate() {
+    return certificate;
+}
+
 string Movie::GetMainStar() {
     return mainStar;
 }
@@ -58,6 +63,7 @@ void Movie::DisplayMovieInformation() {
     cout << id << " : " << title << endl;
     cout << "Description: " << description << endl;
     cout << "Genre: " << genre << endl;
+    cout << "Certificate: " << certificate << endl;
     cout << "Running Time: " << runningTime << " mins" << endl;
     cout << "Main Star: " << mainStar << endl;
     cout << "Distributor: " << filmDistributor << endl;
