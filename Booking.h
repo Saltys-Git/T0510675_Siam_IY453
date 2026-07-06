@@ -33,6 +33,7 @@ public:
     string GetCustomerName();
     string GetMovieTitle();
     string GetShowDate();
+    int GetScreenId();
 };
 
 #endif //ASSESMENT_1_BOOKING_H

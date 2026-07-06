@@ -10,12 +10,14 @@
 #include "BookingValidator.h"
 #include "Schedule.h"
 #include "ManagerAuth.h"
+#include "ScreenManager.h"
 using namespace std;
 
 class MenuSystem {
 private:
     MovieManager movieManager;
     BookingManager bookingManager;
+    ScreenManager screenManager;
     BookingValidator validator;
     Schedule schedule;
     ManagerAuth managerAuth;
@@ -40,6 +42,9 @@ private:
     void RunRemoveMovieFlow();
     void RunAddScheduleFlow();
     void RunRemoveScheduleFlow();
+    void RunAddScreenFlow();
+    void RunRemoveScreenFlow();
+    void RunAssignMovieToScreenFlow();
 
 public:
     MenuSystem();

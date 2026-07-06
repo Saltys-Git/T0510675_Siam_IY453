@@ -41,4 +41,6 @@ add_executable(Assesment_1 main.cpp
         MenuSystem.cpp
         MenuSystem.h
         ManagerAuth.cpp
-        ManagerAuth.h)
+        ManagerAuth.h
+        ScreenManager.cpp
+        ScreenManager.h)

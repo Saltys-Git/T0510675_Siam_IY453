@@ -55,3 +55,8 @@ string Booking::GetMovieTitle() {
 string Booking::GetShowDate() {
     return showDate;
 }
+
+
+int Booking::GetScreenId() {
+    return screenId;
+}

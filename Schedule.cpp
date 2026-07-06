@@ -99,9 +99,10 @@ void Schedule::DisplayScheduleFromFile() {
         bool moreLines = true;
 
         while (moreLines == true) {
-            moreLines = (bool)getline(inputFile, currentLine);
-            if (moreLines == true) {
+            if (getline(inputFile, currentLine)) {
                 cout << currentLine << endl;
+            } else {
+                moreLines = false;
             }
         }
         inputFile.close();
@@ -133,9 +134,12 @@ bool Schedule::GetLatestWeekDates(string* weekStartOut, string* weekEndOut) {
         bool moreLines = true;
 
         while (moreLines == true) {
-            moreLines = (bool)getline(inputFile, currentLine);
-            if (moreLines == true && currentLine.empty() == false) {
-                lastLine = currentLine;
+            if (getline(inputFile, currentLine)) {
+                if (currentLine.empty() == false) {
+                    lastLine = currentLine;
+                }
+            } else {
+                moreLines = false;
             }
         }
         inputFile.close();
@@ -147,9 +151,10 @@ bool Schedule::GetLatestWeekDates(string* weekStartOut, string* weekEndOut) {
             bool moreFields = true;
 
             while (moreFields == true) {
-                moreFields = (bool)getline(lineStream, field, ',');
-                if (moreFields == true) {
+                if (getline(lineStream, field, ',')) {
                     fields.push_back(field);
+                } else {
+                    moreFields = false;
                 }
             }
 

@@ -148,6 +148,16 @@ void MenuSystem::RunAddScheduleFlow() {
         return;
     }
 
+    screenManager.DisplayAllScreens();
+    cout << "Enter the screen ID to schedule this film on: ";
+    int screenId = ReadValidatedMenuChoice(1, 9999);
+
+    Screen* selectedScreen = screenManager.FindScreenById(screenId);
+    if (selectedScreen == nullptr) {
+        cout << "No screen found with that ID." << endl;
+        return;
+    }
+
     string weekStartDate;
     bool startDateAccepted = false;
     while (startDateAccepted == true == false) {
@@ -168,8 +178,8 @@ void MenuSystem::RunAddScheduleFlow() {
         }
     }
 
-    Screen selectedScreen(2, 150, 0, *selectedMovie, IMAX, "", "");
-    vector<ScheduleEntry> weeklyEntries = schedule.GenerateWeeklySchedule(selectedScreen, weekStartDate, weekEndDate);
+    screenManager.AssignMovieToScreen(screenId, *selectedMovie);
+    vector<ScheduleEntry> weeklyEntries = schedule.GenerateWeeklySchedule(*selectedScreen, weekStartDate, weekEndDate);
     schedule.SaveScheduleToFile(weeklyEntries);
 
     currentWeekStart = weekStartDate;
@@ -193,6 +203,11 @@ void MenuSystem::RunRemoveScheduleFlow() {
 }
 
 void MenuSystem::RunStaffBookingFlow() {
+    if (screenManager.GetScreenCount() == 0) {
+        cout << "No screens have been added yet. Ask the manager to add one first." << endl;
+        return;
+    }
+
     if (currentWeekStart.empty() == true) {
         cout << "No schedule has been created yet. Ask the manager to add one first." << endl;
         return;
@@ -230,13 +245,23 @@ void MenuSystem::RunStaffBookingFlow() {
         }
     }
 
+    screenManager.DisplayAllScreens();
+    cout << "Enter screen ID: ";
+    int screenId = ReadValidatedMenuChoice(1, 9999);
+
+    Screen* selectedScreen = screenManager.FindScreenById(screenId);
+    if (selectedScreen == nullptr) {
+        cout << "No screen found with that ID." << endl;
+        return;
+    }
+
     cout << "Ticket type (1=Adult 2=Child 3=Student 4=Senior): ";
     int ticketChoice = ReadValidatedMenuChoice(1, 4);
     cout << "Number of tickets: ";
     int ticketQuantity = ReadValidatedMenuChoice(1, 250);
 
-    Screen currentScreen(1, 150, 0, *selectedMovie, IMAX, "", "");
-    if (validator.IsWithinSeatCapacity(currentScreen, ticketQuantity) == false) {
+    bool bookingAllowed = screenManager.BookSeatsOnScreen(screenId, ticketQuantity);
+    if (bookingAllowed == false) {
         return;
     }
 
@@ -251,7 +276,7 @@ void MenuSystem::RunStaffBookingFlow() {
     int paymentChoice = ReadValidatedMenuChoice(1, 2);
     Payment* newPayment = CreatePaymentFromChoice(paymentChoice, amountDue);
 
-    Booking newBooking(nextBookingId, customerName, movieTitle, 1, showDate, showTime,
+    Booking newBooking(nextBookingId, customerName, movieTitle, screenId, showDate, showTime,
                         newTicket, newPayment);
     newBooking.DisplayBookingInformation();
     bookingManager.SaveBookingToFile(newBooking);
@@ -268,9 +293,12 @@ void MenuSystem::RunManagerMenu() {
         cout << "2. Remove movie" << endl;
         cout << "3. Add schedule" << endl;
         cout << "4. Remove schedule" << endl;
-        cout << "5. Log out" << endl;
+        cout << "5. Add screen" << endl;
+        cout << "6. Remove screen" << endl;
+        cout << "7. Assign movie to screen" << endl;
+        cout << "8. Log out" << endl;
 
-        int managerChoice = ReadValidatedMenuChoice(1, 5);
+        int managerChoice = ReadValidatedMenuChoice(1, 8);
 
         if (managerChoice == 1) {
             RunAddMovieFlow();
@@ -280,6 +308,12 @@ void MenuSystem::RunManagerMenu() {
             RunAddScheduleFlow();
         } else if (managerChoice == 4) {
             RunRemoveScheduleFlow();
+        } else if (managerChoice == 5) {
+            RunAddScreenFlow();
+        } else if (managerChoice == 6) {
+            RunRemoveScreenFlow();
+        } else if (managerChoice == 7) {
+            RunAssignMovieToScreenFlow();
         } else {
             cout << "Logging out of manager menu." << endl;
             managerSessionActive = false;
@@ -401,4 +435,72 @@ bool MenuSystem::IsValidTimeFormat(string timeText) {
     }
 
     return formatIsValid;
+}
+
+
+void MenuSystem::RunAddScreenFlow() {
+    cout << "Enter screen ID: ";
+    int screenId = ReadValidatedMenuChoice(1, 9999);
+
+    cout << "Enter seat capacity (100-250): ";
+    int seatCapacity = ReadValidatedMenuChoice(100, 250);
+
+    cout << "Facility (1=Standard 2=IMAX 3=Couple Seat 4=Seat Service): ";
+    int facilityChoice = ReadValidatedMenuChoice(1, 4);
+
+    ScreenFacility facility;
+    if (facilityChoice == 1) {
+        facility = STANDARD;
+    } else if (facilityChoice == 2) {
+        facility = IMAX;
+    } else if (facilityChoice == 3) {
+        facility = COUPLE_SEAT;
+    } else {
+        facility = SEAT_SERVICE;
+    }
+
+    Movie blankMovie;
+    Screen newScreen(screenId, seatCapacity, 0, blankMovie, facility);
+    screenManager.AddScreen(newScreen);
+
+    cout << "Screen added successfully." << endl;
+}
+
+void MenuSystem::RunRemoveScreenFlow() {
+    screenManager.DisplayAllScreens();
+
+    cout << "Enter the ID of the screen to remove: ";
+    int screenId = ReadValidatedMenuChoice(1, 9999);
+
+    bool removalSuccessful = screenManager.RemoveScreenById(screenId);
+    if (removalSuccessful == true) {
+        cout << "Screen removed successfully." << endl;
+    } else {
+        cout << "No screen found with that ID." << endl;
+    }
+}
+
+void MenuSystem::RunAssignMovieToScreenFlow() {
+    screenManager.DisplayAllScreens();
+    cout << "Enter the screen ID: ";
+    int screenId = ReadValidatedMenuChoice(1, 9999);
+
+    Screen* selectedScreen = screenManager.FindScreenById(screenId);
+    if (selectedScreen == nullptr) {
+        cout << "No screen found with that ID." << endl;
+        return;
+    }
+
+    movieManager.DisplayAllMovies();
+    cout << "Enter the movie ID to assign: ";
+    int movieId = ReadValidatedMenuChoice(1, 9999);
+
+    Movie* selectedMovie = movieManager.FindMovieById(movieId);
+    if (selectedMovie == nullptr) {
+        cout << "No movie found with that ID." << endl;
+        return;
+    }
+
+    screenManager.AssignMovieToScreen(screenId, *selectedMovie);
+    cout << "Movie assigned to screen successfully." << endl;
 }

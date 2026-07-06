@@ -113,9 +113,10 @@ Movie MovieManager::ParseCsvLine(string csvLine) {
     bool moreFields = true;
 
     while (moreFields == true) {
-        moreFields = (bool)getline(lineStream, field, ',');
-        if (moreFields == true) {
+        if (getline(lineStream, field, ',')) {
             fields.push_back(field);
+        } else {
+            moreFields = false;
         }
     }
 
@@ -155,12 +156,15 @@ void MovieManager::LoadMoviesFromFile() {
         bool moreLines = true;
 
         while (moreLines == true) {
-            moreLines = (bool)getline(inputFile, currentLine);
-            if (moreLines == true && currentLine.empty() == false) {
-                Movie loadedMovie = ParseCsvLine(currentLine);
-                if (loadedMovie.GetId() != 0) {
-                    movies.push_back(loadedMovie);
+            if (getline(inputFile, currentLine)) {
+                if (currentLine.empty() == false) {
+                    Movie loadedMovie = ParseCsvLine(currentLine);
+                    if (loadedMovie.GetId() != 0) {
+                        movies.push_back(loadedMovie);
+                    }
                 }
+            } else {
+                moreLines = false;
             }
         }
         inputFile.close();

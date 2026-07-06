@@ -23,22 +23,23 @@ private:
     int seatBooked;
     Movie movieShowing;
     ScreenFacility screenFacility;
-    string startDate;
-    string endDate;
 
 public:
     Screen();
     Screen(int screenId, int screenSeatCapacity, int screenSeatBooked, Movie screenMovieShowing,
-           ScreenFacility screenScreenFacility, string screenStartDate, string screenEndDate);
+           ScreenFacility screenScreenFacility);
 
     int GetId();
+    void SetId(int newId);
     int GetSeatCapacity();
     int GetSeatBooked();
     Movie GetMovieShowing();
-
+    string GetFacilityName();
     void ShowScreenInformation();
     bool BookSeat(int ticketNumber);
     vector<ShowTime> GenerateDailyShowtimes();
+    ScreenFacility GetScreenFacility();
+    void SetMovieShowing(Movie newMovie);
 };
 
 #endif //ASSESMENT_1_SCREEN_H

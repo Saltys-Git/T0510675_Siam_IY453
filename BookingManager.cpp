@@ -16,6 +16,7 @@ string BookingManager::BuildCsvLine(Booking& booking) {
     csvLine << booking.GetId() << ","
             << booking.GetCustomerName() << ","
             << booking.GetMovieTitle() << ","
+            << booking.GetScreenId() << ","
             << booking.GetShowDate() << ","
             << booking.CalculateTotalCost();
 
@@ -45,9 +46,10 @@ void BookingManager::DisplayAllBookingsFromFile() {
         bool moreLines = true;
 
         while (moreLines == true) {
-            moreLines = (bool)getline(inputFile, currentLine);
-            if (moreLines == true) {
+            if (getline(inputFile, currentLine)) {
                 cout << currentLine << endl;
+            } else {
+                moreLines = false;
             }
         }
         inputFile.close();
@@ -64,9 +66,10 @@ vector<string> SplitCsvLine(string line) {
     bool moreFields = true;
 
     while (moreFields == true) {
-        moreFields = (bool)getline(lineStream, field, ',');
-        if (moreFields == true) {
+        if (getline(lineStream, field, ',')) {
             fields.push_back(field);
+        } else {
+            moreFields = false;
         }
     }
 
@@ -83,13 +86,14 @@ void BookingManager::SearchBookingsByCustomerName(string searchName) {
         bool matchFound = false;
 
         while (moreLines == true) {
-            moreLines = (bool)getline(inputFile, currentLine);
-            if (moreLines == true) {
+            if (getline(inputFile, currentLine)) {
                 vector<string> fields = SplitCsvLine(currentLine);
                 if (fields.size() > 1 && fields[1] == searchName) {
                     cout << currentLine << endl;
                     matchFound = true;
                 }
+            } else {
+                moreLines = false;
             }
         }
         inputFile.close();

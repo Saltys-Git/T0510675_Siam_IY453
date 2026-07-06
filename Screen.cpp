@@ -13,18 +13,20 @@ Screen::Screen() {
 }
 
 Screen::Screen(int screenId, int screenSeatCapacity, int screenSeatBooked, Movie screenMovieShowing,
-               ScreenFacility screenScreenFacility, string screenStartDate, string screenEndDate) {
+               ScreenFacility screenScreenFacility) {
     id = screenId;
     seatCapacity = screenSeatCapacity;
     seatBooked = screenSeatBooked;
     movieShowing = screenMovieShowing;
     screenFacility = screenScreenFacility;
-    startDate = screenStartDate;
-    endDate = screenEndDate;
 }
 
 int Screen::GetId() {
     return id;
+}
+
+void Screen::SetId(int newId) {
+    id = newId;
 }
 
 int Screen::GetSeatCapacity() {
@@ -39,11 +41,35 @@ Movie Screen::GetMovieShowing() {
     return movieShowing;
 }
 
+string Screen::GetFacilityName() {
+    string facilityName;
+
+    if (screenFacility == STANDARD) {
+        facilityName = "Standard";
+    } else if (screenFacility == IMAX) {
+        facilityName = "IMAX";
+    } else if (screenFacility == COUPLE_SEAT) {
+        facilityName = "Couple Seat";
+    } else {
+        facilityName = "Seat Service";
+    }
+
+    return facilityName;
+}
+
 void Screen::ShowScreenInformation() {
-    cout << endl << "Screen Information:" << endl;
-    cout << "Movie: " << movieShowing.GetTitle() << endl;
-    cout << "Seats available: " << (seatCapacity - seatBooked) << endl;
-    cout << "Show time: " << startDate << " - " << endDate << endl;
+    cout << endl << "Screen ID: " << id << endl;
+    cout << "Facility: " << GetFacilityName() << endl;
+
+    if (movieShowing.GetTitle().empty() == true) {
+        cout << "Movie: No movie currently assigned" << endl;
+    } else {
+        cout << "Movie: " << movieShowing.GetTitle() << endl;
+    }
+
+    cout << "Total Capacity: " << seatCapacity << endl;
+    cout << "Seats Booked: " << seatBooked << endl;
+    cout << "Seats Available: " << (seatCapacity - seatBooked) << endl;
 }
 
 bool Screen::BookSeat(int ticketNumber) {
@@ -64,4 +90,13 @@ vector<ShowTime> Screen::GenerateDailyShowtimes() {
     ShowtimeGenerator generator;
     vector<ShowTime> dailyShowtimes = generator.GenerateShowtimesForDay(movieShowing.GetRunningTime());
     return dailyShowtimes;
+}
+
+
+ScreenFacility Screen::GetScreenFacility() {
+    return screenFacility;
+}
+
+void Screen::SetMovieShowing(Movie newMovie) {
+    movieShowing = newMovie;
 }
